@@ -1,2 +1,2 @@
 # Trabalho-LP
- Programming anguages homework
+ Programming languages homework
