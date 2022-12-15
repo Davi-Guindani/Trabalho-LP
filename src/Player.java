@@ -1,28 +1,36 @@
 import java.awt.*;
 
 public class Player extends Entity {
-    GamePanel gp;
-    KeyHandler keyH;
+    private KeyHandler keyH;
 
     public Player(GamePanel gp, KeyHandler keyH) {
-        this.gp = gp;
+        super(gp);
+        this.setKeyH(keyH);
+        this.setX(gp.getTileSize());
+        this.setY((gp.getMaxScreenRow()) / 2 * gp.getTileSize() - gp.getTileSize());
+        this.setSpeed(4);
+    }
+
+    public void setKeyH(KeyHandler keyH) {
         this.keyH = keyH;
-        setDefaultValues();
+    }
+    public KeyHandler getKeyH() {
+        return this.keyH;
     }
 
-    public void setDefaultValues() {
-        x = (gp.maxScreenCol * gp.tileSize - gp.tileSize) / 2;
-        y = (gp.maxScreenRow - 2) * gp.tileSize - gp.tileSize / 2;
-        speed = 4;
-    }
-
+    @Override
     public void update() {
-        if(keyH.rightPressed && ((x + speed) <= (gp.screenWidth - gp.tileSize * 2))) x += speed;
-        else if(keyH.leftPressed && ((x - speed) >= (gp.tileSize))) x -= speed;
+        if(this.getKeyH().getUpPressed() && ((this.getY() - this.getSpeed()) >= (this.getGamePanel().getTileSize()))) {
+            this.setY(this.getY() - this.getSpeed());
+        }
+        else if(this.getKeyH().getDownPressed() && ((this.getY() + this.getSpeed()) <= (this.getGamePanel().getScreenHeight() - this.getGamePanel().getTileSize() * 4))) {
+            this.setY(this.getY() + this.getSpeed());
+        }
     }
 
+    @Override
     public void draw(Graphics g) {
         g.setColor(Color.green);
-        g.fillRect(x, y, gp.tileSize, gp.tileSize);
+        g.fillRect(this.getX(), this.getY(), this.getGamePanel().getTileSize(), this.getGamePanel().getTileSize() * 3);
     }
 }
